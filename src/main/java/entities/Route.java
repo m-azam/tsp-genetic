@@ -5,23 +5,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Route {
 
-    ArrayList<Long> sequence = new ArrayList<>();
-    int totalDistance;
-    ArrayList<Integer> distances = new ArrayList<>();
+    ArrayList<Integer> sequence = new ArrayList<>();
+    double totalDistance;
+    ArrayList<Double> distances = new ArrayList<>();
 
-    public Route(long numberOfCities, int[][] distanceMatrix) {
-        for (long iterator = 0; iterator < numberOfCities; iterator++) {
-            sequence.add(ThreadLocalRandom.current().nextLong(numberOfCities + 1));
+    public Route(int numberOfCities, double[][] distanceMatrix) {
+        for (int iterator = 0; iterator < numberOfCities; iterator++) {
+            sequence.add(ThreadLocalRandom.current().nextInt(numberOfCities + 1));
         }
-        calculateTotalDistance();
+        calculateTotalDistance(distanceMatrix);
     }
 
     public Route(Route parentOne, Route ParentTwo) {
 
     }
 
-    private int calculateTotalDistance() {
-        return ;
+    private void calculateTotalDistance(double[][] distanceMatrix) {
     }
 
 }
