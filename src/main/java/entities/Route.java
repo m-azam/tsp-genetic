@@ -27,4 +27,12 @@ public class Route {
         totalDistance = totalDistance + distanceMatrix[sequence.get(sequence.size() - 1)][sequence.get(0)];
     }
 
+    public ArrayList<Integer> getSequence() {
+        return sequence;
+    }
+
+    public double getTotalDistance() {
+        return totalDistance;
+    }
+
 }
