@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Route {
 
     ArrayList<Integer> sequence = new ArrayList<>();
-    double totalDistance;
+    double totalDistance = 0.0;
     ArrayList<Double> distances = new ArrayList<>();
 
     public Route(int numberOfCities, double[][] distanceMatrix) {
@@ -21,6 +21,10 @@ public class Route {
     }
 
     private void calculateTotalDistance(double[][] distanceMatrix) {
+        for (int city = 1; city < sequence.size(); city++) {
+            totalDistance = totalDistance + distanceMatrix[sequence.get(city - 1)][sequence.get(city)];
+        }
+        totalDistance = totalDistance + distanceMatrix[sequence.get(sequence.size() - 1)][sequence.get(0)];
     }
 
 }
