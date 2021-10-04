@@ -17,6 +17,13 @@ public class Route {
     }
 
     public Route(Route parentOne, Route ParentTwo) {
+        int window1 = ThreadLocalRandom.current().nextInt(0, parentOne.sequence.size());
+        int window2 = ThreadLocalRandom.current().nextInt(0, parentOne.sequence.size());
+        if (window1 > window2) {
+            int temp = window1;
+            window1 = window2;
+            window2 = temp;
+        }
 
     }
 

@@ -4,13 +4,14 @@ import entities.Route;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PairingUtils {
 
     // Function picks pair with the most distinct available in list
-    public static Route getMostDistinctPair(Route route, ArrayList<Route> routes) {
+    public static Route getMostDistinctPair(Route route, List<Route> routes) {
         int maxCommonPairCount = -1;
         Route mostDistinctRouteCandidate = null;
         Set<String> pairsInRoute = new HashSet<>();

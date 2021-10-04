@@ -1,5 +1,7 @@
 package entities;
 
+import utils.PairingUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +20,18 @@ public class Generation {
     public Generation(Generation previousGeneration) {
         this.applyElitism(previousGeneration);
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
-        previousGeneration.routes.sort(Comparator.comparingDouble(Route::getTotalDistance));
+        // As elitism is applied
+        previousGenerationRoutes.remove(previousGeneration.bestRoute);
+        // sort to get the best candidate first
+        previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getTotalDistance));
+        while (previousGenerationRoutes.size() > 0) {
+            Route parentOne = previousGenerationRoutes.get(0);
+            previousGenerationRoutes.remove(parentOne);
+            Route parentTwo = PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
+            previousGenerationRoutes.remove(parentTwo);
+            Route childRoute = new Route(parentOne, parentTwo);
+            this.routes.add(childRoute);
+        }
     }
 
     public Route getBestRoute() {
