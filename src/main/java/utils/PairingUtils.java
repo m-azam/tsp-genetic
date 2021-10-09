@@ -41,4 +41,23 @@ public class PairingUtils {
         return routes.get(randomIndex);
     }
 
+    public static ArrayList<Integer> getOrderCrossover(Route parentOne, Route parentTwo, int window1, int window2) {
+        ArrayList<Integer> sequence = new ArrayList<>();
+        for (int i = window1; i <= window2; i++) {
+            sequence.add(i, parentOne.getSequence().get(i));
+        }
+        int windowSize = window2 - window1 + 1;
+        int i = 0;
+        for (int element : parentTwo.getSequence()) {
+            if (!sequence.contains(element)) {
+                if (sequence.get(i) == null) {
+                    sequence.add(i, element);
+                } else {
+                    sequence.add(i + windowSize, element);
+                }
+            }
+        }
+        return sequence;
+    }
+
 }

@@ -14,5 +14,10 @@ public class TravellingSalesmanApplication {
         ArrayList<Generation> generations = new ArrayList<>();
         Generation firstGeneration = new Generation(populationSize, world);
         generations.add(firstGeneration);
+        int numberOfGenerations = 5;
+        for (int i = 1; i < numberOfGenerations; i++) {
+            Generation generation = new Generation(generations.get(i-1), world);
+            System.out.println(generation.getBestRoute().getTotalDistance());
+        }
     }
 }

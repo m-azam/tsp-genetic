@@ -1,5 +1,7 @@
 package entities;
 
+import utils.PairingUtils;
+
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,7 +18,7 @@ public class Route {
         calculateTotalDistance(distanceMatrix);
     }
 
-    public Route(Route parentOne, Route ParentTwo) {
+    public Route(Route parentOne, Route parentTwo, double[][] distanceMatrix) {
         int window1 = ThreadLocalRandom.current().nextInt(0, parentOne.sequence.size());
         int window2 = ThreadLocalRandom.current().nextInt(0, parentOne.sequence.size());
         if (window1 > window2) {
@@ -24,7 +26,8 @@ public class Route {
             window1 = window2;
             window2 = temp;
         }
-
+        this.sequence.addAll(PairingUtils.getOrderCrossover(parentOne, parentTwo, window1, window2));
+        calculateTotalDistance(distanceMatrix);
     }
 
     private void calculateTotalDistance(double[][] distanceMatrix) {

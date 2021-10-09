@@ -17,7 +17,7 @@ public class Generation {
         }
     }
 
-    public Generation(Generation previousGeneration) {
+    public Generation(Generation previousGeneration, World world) {
         this.applyElitism(previousGeneration);
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
         // As elitism is applied
@@ -29,7 +29,7 @@ public class Generation {
             previousGenerationRoutes.remove(parentOne);
             Route parentTwo = PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
             previousGenerationRoutes.remove(parentTwo);
-            Route childRoute = new Route(parentOne, parentTwo);
+            Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix);
             this.routes.add(childRoute);
         }
     }
