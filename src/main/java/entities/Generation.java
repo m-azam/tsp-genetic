@@ -21,7 +21,7 @@ public class Generation {
         getBestRoute();
     }
 
-    public Generation(Generation previousGeneration, World world) {
+    public Generation(Generation previousGeneration, World world, boolean mostDistinct) {
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
         // sorted according to distance
         previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getTotalDistance));
@@ -32,13 +32,10 @@ public class Generation {
         EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(range, probabilityDistribution);
         // Picking and crossover
         for (int i = 0; i < previousGenerationRoutes.size() - 200; i++) {
-            int randomIndexOne = ThreadLocalRandom.current().nextInt(0, previousGenerationRoutes.size());
-            int randomIndexTwo = ThreadLocalRandom.current().nextInt(0, previousGenerationRoutes.size());
-//            int randomIndexOne = distribution.sample();
-//            int randomIndexTwo = distribution.sample();
+            int randomIndexOne = distribution.sample();
+            int randomIndexTwo = distribution.sample();
             Route parentOne = previousGenerationRoutes.get(randomIndexOne);
-//            Route parentTwo = previousGenerationRoutes.get(randomIndexTwo);
-            Route parentTwo = PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
+            Route parentTwo = getSecondParent(randomIndexTwo, parentOne, previousGenerationRoutes, mostDistinct);
             Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix);
             this.routes.add(childRoute);
         }
@@ -69,5 +66,13 @@ public class Generation {
             prob = prob - delta;
         }
         return probabilityDistribution;
+    }
+
+    private Route getSecondParent(int randomIndexTwo, Route parentOne, ArrayList<Route> previousGenerationRoutes, boolean mostDistinct) {
+        if (mostDistinct) {
+            return PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
+        } else {
+            return previousGenerationRoutes.get(randomIndexTwo);
+        }
     }
 }
