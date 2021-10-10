@@ -5,12 +5,12 @@ import utils.PairingUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class Generation {
 
     private static final double MAX_PROBABILITY_DISTRIBUTION = 0.5;
+    private static final double ELITISM_RATIO = 0.1;
     public ArrayList<Route> routes = new ArrayList<>();
     Route bestRoute;
 
@@ -31,7 +31,8 @@ public class Generation {
         double[] probabilityDistribution = generateProbabilities(previousGenerationRoutes.size());
         EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(range, probabilityDistribution);
         // Picking and crossover
-        for (int i = 0; i < previousGenerationRoutes.size() - 200; i++) {
+        int elitismBound = (int) Math.ceil(previousGenerationRoutes.size() * ELITISM_RATIO);
+        for (int i = 0; i < previousGenerationRoutes.size() - elitismBound; i++) {
             int randomIndexOne = distribution.sample();
             int randomIndexTwo = distribution.sample();
             Route parentOne = previousGenerationRoutes.get(randomIndexOne);
@@ -54,7 +55,8 @@ public class Generation {
     }
 
     private void applyElitism(ArrayList<Route> previousGenerationRoutes) {
-        this.routes.addAll(previousGenerationRoutes.subList(0, 200));
+        int bound = (int) Math.ceil(previousGenerationRoutes.size() * ELITISM_RATIO);
+        this.routes.addAll(previousGenerationRoutes.subList(0, bound));
     }
 
     private double[] generateProbabilities(int numberOfCities) {

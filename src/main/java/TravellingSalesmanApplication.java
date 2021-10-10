@@ -8,7 +8,7 @@ public class TravellingSalesmanApplication {
     public static void main(String[] args) {
 
         // Input number of cities
-        int numberOfCities = 100;
+        int numberOfCities = 500;
         // Input Population Size
         int populationSize = 2000;
         World world = new World(numberOfCities);
@@ -16,7 +16,7 @@ public class TravellingSalesmanApplication {
         Generation firstGeneration = new Generation(populationSize, world);
         generations.add(firstGeneration);
         int numberOfGenerations = 80;
-        boolean mostDistinctPair = true;
+        boolean mostDistinctPair = false;
         System.out.println(firstGeneration.getBestRoute().getTotalDistance());
         for (int i = 1; i < numberOfGenerations; i++) {
             Generation newGeneration = new Generation(generations.get(i - 1), world, mostDistinctPair);

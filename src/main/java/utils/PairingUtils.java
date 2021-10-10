@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PairingUtils {
 
-    private static final int MUTATION_CHANCE = 90;
+    private static final int MUTATION_CHANCE = 2;
 
     // Function picks pair with the most distinct available in list
     public static Route getMostDistinctPair(Route route, List<Route> routes) {
