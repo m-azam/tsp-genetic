@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 public class Generation {
 
     private static final double MAX_PROBABILITY_DISTRIBUTION = 0.5;
-    private static final double ELITISM_RATIO = 0.1;
     public ArrayList<Route> routes = new ArrayList<>();
     Route bestRoute;
 
@@ -25,19 +24,19 @@ public class Generation {
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
         // sorted according to distance
         previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getTotalDistance));
-        this.applyElitism(previousGenerationRoutes);
+        this.applyElitism(previousGenerationRoutes, world.elitismRatio);
         // Setting probability distribution
         int[] range = IntStream.range(0, previousGenerationRoutes.size()).toArray();
         double[] probabilityDistribution = generateProbabilities(previousGenerationRoutes.size());
         EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(range, probabilityDistribution);
         // Picking and crossover
-        int elitismBound = (int) Math.ceil(previousGenerationRoutes.size() * ELITISM_RATIO);
+        int elitismBound = (int) Math.ceil(previousGenerationRoutes.size() * world.elitismRatio);
         for (int i = 0; i < previousGenerationRoutes.size() - elitismBound; i++) {
             int randomIndexOne = distribution.sample();
             int randomIndexTwo = distribution.sample();
             Route parentOne = previousGenerationRoutes.get(randomIndexOne);
             Route parentTwo = getSecondParent(randomIndexTwo, parentOne, previousGenerationRoutes, mostDistinct);
-            Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix);
+            Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix, world.mutationChance);
             this.routes.add(childRoute);
         }
     }
@@ -54,8 +53,8 @@ public class Generation {
         return bestRoute;
     }
 
-    private void applyElitism(ArrayList<Route> previousGenerationRoutes) {
-        int bound = (int) Math.ceil(previousGenerationRoutes.size() * ELITISM_RATIO);
+    private void applyElitism(ArrayList<Route> previousGenerationRoutes, double elitismRatio) {
+        int bound = (int) Math.ceil(previousGenerationRoutes.size() * elitismRatio);
         this.routes.addAll(previousGenerationRoutes.subList(0, bound));
     }
 

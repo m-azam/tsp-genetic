@@ -8,12 +8,16 @@ public class World {
     double[][] distanceMatrix;
     int xBound = 3000;
     int yBound = 3000;
+    public double elitismRatio;
+    public int mutationChance;
 
-    public World(int numberOfCities) {
+    public World(int numberOfCities, double elitismRatio, int mutationChance) {
         distanceMatrix = new double[numberOfCities][numberOfCities];
         for (int iterator = 0; iterator < numberOfCities; iterator++) {
             cities.add(new City(xBound, yBound));
         }
+        this.elitismRatio = elitismRatio;
+        this.mutationChance = mutationChance;
         calculateDistanceMatrix();
     }
 
