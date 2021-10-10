@@ -4,6 +4,7 @@ import utils.PairingUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class Route {
 
@@ -12,9 +13,7 @@ public class Route {
     ArrayList<Double> distances = new ArrayList<>();
 
     public Route(int numberOfCities, double[][] distanceMatrix) {
-        for (int iterator = 0; iterator < numberOfCities; iterator++) {
-            sequence.add(ThreadLocalRandom.current().nextInt(numberOfCities + 1));
-        }
+        sequence.addAll(ThreadLocalRandom.current().ints(0, numberOfCities).distinct().limit(numberOfCities).boxed().collect(Collectors.toList()));
         calculateTotalDistance(distanceMatrix);
     }
 
