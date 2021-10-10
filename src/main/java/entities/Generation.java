@@ -4,6 +4,7 @@ import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import utils.PairingUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.IntStream;
 
@@ -23,7 +24,9 @@ public class Generation {
     public Generation(Generation previousGeneration, World world, boolean mostDistinct) {
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
         // sorted according to distance
-        previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getTotalDistance));
+        previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getFitness));
+        // Reversing to get best route first
+        Collections.reverse(previousGenerationRoutes);
         this.applyElitism(previousGenerationRoutes, world.elitismRatio);
         // Setting probability distribution
         int[] range = IntStream.range(0, previousGenerationRoutes.size()).toArray();
