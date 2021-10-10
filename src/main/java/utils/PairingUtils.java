@@ -7,6 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PairingUtils {
 
+    private static final int MUTATION_CHANCE = 90;
+
     // Function picks pair with the most distinct available in list
     public static Route getMostDistinctPair(Route route, List<Route> routes) {
         int maxCommonPairCount = -1;
@@ -57,6 +59,18 @@ public class PairingUtils {
                 }
                 i++;
             }
+        }
+        return mutate(sequence);
+    }
+
+    private static ArrayList<Integer> mutate(ArrayList<Integer> sequence) {
+        int indexOne = ThreadLocalRandom.current().nextInt(0, sequence.size());
+        int indexTwo = ThreadLocalRandom.current().nextInt(0, sequence.size());
+        int chance = ThreadLocalRandom.current().nextInt(0, 100);
+        if (chance < MUTATION_CHANCE) {
+            Integer temp = sequence.get(indexOne);
+            sequence.set(indexOne, sequence.get(indexTwo));
+            sequence.set(indexTwo, temp);
         }
         return sequence;
     }

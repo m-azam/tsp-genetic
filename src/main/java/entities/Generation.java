@@ -5,12 +5,13 @@ import utils.PairingUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class Generation {
 
     private static final double MAX_PROBABILITY_DISTRIBUTION = 0.5;
-    ArrayList<Route> routes = new ArrayList<>();
+    public ArrayList<Route> routes = new ArrayList<>();
     Route bestRoute;
 
     public Generation(int populationSize, World world) {
@@ -21,31 +22,26 @@ public class Generation {
     }
 
     public Generation(Generation previousGeneration, World world) {
-        this.applyElitism(previousGeneration);
         ArrayList<Route> previousGenerationRoutes = new ArrayList<>(previousGeneration.routes);
         // sorted according to distance
         previousGenerationRoutes.sort(Comparator.comparingDouble(Route::getTotalDistance));
+        this.applyElitism(previousGenerationRoutes);
         // Setting probability distribution
-        int[] range = IntStream.range(0, world.cities.size()).toArray();
-        double[] probabilityDistribution = generateProbabilities(world.cities.size());
+        int[] range = IntStream.range(0, previousGenerationRoutes.size()).toArray();
+        double[] probabilityDistribution = generateProbabilities(previousGenerationRoutes.size());
         EnumeratedIntegerDistribution distribution = new EnumeratedIntegerDistribution(range, probabilityDistribution);
         // Picking and crossover
-        for (int i = 0; i < previousGenerationRoutes.size(); i++) {
-            int randomCityIndex = distribution.sample();
-            Route parentOne = previousGenerationRoutes.get(randomCityIndex);
+        for (int i = 0; i < previousGenerationRoutes.size() - 200; i++) {
+            int randomIndexOne = ThreadLocalRandom.current().nextInt(0, previousGenerationRoutes.size());
+            int randomIndexTwo = ThreadLocalRandom.current().nextInt(0, previousGenerationRoutes.size());
+//            int randomIndexOne = distribution.sample();
+//            int randomIndexTwo = distribution.sample();
+            Route parentOne = previousGenerationRoutes.get(randomIndexOne);
+//            Route parentTwo = previousGenerationRoutes.get(randomIndexTwo);
             Route parentTwo = PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
             Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix);
             this.routes.add(childRoute);
         }
-//        while (previousGenerationRoutes.size() > 0) {
-//            Route parentOne = previousGenerationRoutes.get(0);
-//            previousGenerationRoutes.remove(parentOne);
-//            //Route parentTwo = PairingUtils.getMostDistinctPair(parentOne, previousGenerationRoutes);
-//            Route parentTwo = PairingUtils.getRandomPair(previousGenerationRoutes);
-//            previousGenerationRoutes.remove(parentTwo);
-//            Route childRoute = new Route(parentOne, parentTwo, world.distanceMatrix);
-//            this.routes.add(childRoute);
-//        }
     }
 
     public Route getBestRoute() {
@@ -60,8 +56,8 @@ public class Generation {
         return bestRoute;
     }
 
-    private void applyElitism(Generation generation) {
-        this.routes.add(generation.getBestRoute());
+    private void applyElitism(ArrayList<Route> previousGenerationRoutes) {
+        this.routes.addAll(previousGenerationRoutes.subList(0, 200));
     }
 
     private double[] generateProbabilities(int numberOfCities) {
