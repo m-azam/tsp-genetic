@@ -71,5 +71,6 @@ public class TravellingSalesmanApplication {
         tourGraph.pack();
         RefineryUtilities.centerFrameOnScreen(tourGraph);
         tourGraph.setVisible(true);
+        int i = 0;
     }
 }

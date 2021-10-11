@@ -35,7 +35,7 @@ public class TourGraph extends ApplicationFrame {
     public XYDataset createDataset(World world, Route route) {
         ArrayList<City> cities = world.cities;
         XYSeriesCollection dataSet = new XYSeriesCollection();
-        XYSeries xySeries = new XYSeries("plot");
+        XYSeries xySeries = new XYSeries("plot", false);
         for (Integer index : route.getSequence()) {
             xySeries.add(cities.get(index).x, cities.get(index).y);
         }
