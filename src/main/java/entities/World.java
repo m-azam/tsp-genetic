@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class World {
 
-    ArrayList<City> cities = new ArrayList<>();
+    public ArrayList<City> cities = new ArrayList<>();
     double[][] distanceMatrix;
     int xBound = 3000;
     int yBound = 3000;

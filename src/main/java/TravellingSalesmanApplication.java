@@ -1,6 +1,7 @@
 import entities.Generation;
 import entities.World;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.TableOrder;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -66,5 +67,9 @@ public class TravellingSalesmanApplication {
         distanceGraph.pack();
         RefineryUtilities.centerFrameOnScreen(distanceGraph);
         distanceGraph.setVisible(true);
+        TourGraph tourGraph = new TourGraph(world, generations.get(generations.size() - 1).getBestRoute());
+        tourGraph.pack();
+        RefineryUtilities.centerFrameOnScreen(tourGraph);
+        tourGraph.setVisible(true);
     }
 }
