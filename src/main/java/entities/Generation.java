@@ -61,11 +61,11 @@ public class Generation {
         this.routes.addAll(previousGenerationRoutes.subList(0, bound));
     }
 
-    private double[] generateProbabilities(int numberOfCities) {
+    private double[] generateProbabilities(int populationSize) {
         double prob = MAX_PROBABILITY_DISTRIBUTION;
-        double delta = MAX_PROBABILITY_DISTRIBUTION / (double) numberOfCities;
-        double[] probabilityDistribution = new double[numberOfCities];
-        for (int i = 0; i < numberOfCities; i++) {
+        double delta = MAX_PROBABILITY_DISTRIBUTION / (double) populationSize;
+        double[] probabilityDistribution = new double[populationSize];
+        for (int i = 0; i < populationSize; i++) {
             probabilityDistribution[i] = prob;
             prob = prob - delta;
         }
