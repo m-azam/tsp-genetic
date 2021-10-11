@@ -60,9 +60,9 @@ public class TravellingSalesmanApplication {
         for (int i = 1; i < numberOfGenerations; i++) {
             Generation newGeneration = new Generation(generations.get(i - 1), world, mostDistinctPair);
             generations.add(newGeneration);
-            System.out.println(newGeneration.getBestRoute().getTotalDistance());
+            System.out.println("Best route in generation=" + newGeneration.getBestRoute().getTotalDistance());
         }
-        System.out.println("Calculation complete");
+        System.out.println("Calculation complete, see graph");
         DistanceGraph distanceGraph = new DistanceGraph(generations);
         distanceGraph.pack();
         RefineryUtilities.centerFrameOnScreen(distanceGraph);
